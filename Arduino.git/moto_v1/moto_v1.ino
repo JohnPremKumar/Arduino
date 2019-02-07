@@ -1,0 +1,114 @@
+#include <SoftwareSerial.h>
+const int trigPin = 11;
+const int echoPin = 12;
+
+int In1=7;
+int In2=8;
+
+int In3=9;
+int In4=10;
+
+long duration;
+int distance, irstatus;
+int IR=3;
+
+int state;
+
+void setup() {
+
+pinMode(IR,INPUT);
+pinMode(trigPin, OUTPUT); 
+pinMode(echoPin, INPUT);
+
+pinMode(In1,OUTPUT);
+pinMode(In2,OUTPUT);
+
+pinMode(In3,OUTPUT);
+pinMode(In4,OUTPUT);
+
+Serial.begin(9600);
+
+}
+
+void loop() {
+
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+duration = pulseIn(echoPin, HIGH);
+distance = duration*0.034/2;
+
+irstatus = digitalRead(IR);
+
+if(Serial.available() > 0)    
+{    
+  state = Serial.read();  
+}
+
+if (state == '1')
+{
+ pause();
+}
+
+if (state == '2')
+{
+ forward();
+}
+
+if (state == '3')
+{
+ backward();
+}
+
+if (state == '4')
+{
+ left();
+}
+
+if (state == '5')
+{
+ right();
+}
+
+}
+
+void forward()
+{
+  digitalWrite(In1,LOW);
+  digitalWrite(In2,HIGH );
+  digitalWrite(In3,LOW);  
+  digitalWrite(In4,HIGH);
+}
+void backward()
+{
+  digitalWrite(In1,HIGH);
+  digitalWrite(In2,LOW );
+  digitalWrite(In3,HIGH);  
+  digitalWrite(In4,LOW); 
+}
+
+void left()
+{
+  digitalWrite(In1,HIGH);
+  digitalWrite(In2,LOW);
+  digitalWrite(In3,LOW);
+  digitalWrite(In4,HIGH);
+}
+
+void right()   
+{
+  digitalWrite(In1,LOW);
+  digitalWrite(In2,HIGH);
+  digitalWrite(In3,LOW);
+  digitalWrite(In4,LOW);
+}
+void pause()     
+{
+  digitalWrite(In1,LOW);
+  digitalWrite(In2,LOW);
+  digitalWrite(In3,LOW);
+  digitalWrite(In4,LOW);
+}
+
